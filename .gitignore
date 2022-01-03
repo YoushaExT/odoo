@@ -46,5 +46,8 @@ package.json
 /share/
 /src/
 
+# yousha
+/env/
+
 # avoid adding it after generation from tsconfig command
 tsconfig.json
