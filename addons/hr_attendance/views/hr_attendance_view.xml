@@ -177,7 +177,7 @@
 
     <menuitem id="menu_hr_attendance_attendances_overview" name="Attendances" parent="menu_hr_attendance_root" sequence="1" groups="hr_attendance.group_hr_attendance" action="hr_attendance_action_overview"/>
 
-    <menuitem id="menu_hr_attendance_kiosk_no_user_mode" name="Kiosk Mode" parent="menu_hr_attendance_root" sequence="10" groups="hr_attendance.group_hr_attendance_kiosk" action="hr_attendance_action_kiosk_mode"/>
+    <!-- <menuitem id="menu_hr_attendance_kiosk_no_user_mode" name="Kiosk Mode" parent="menu_hr_attendance_root" sequence="10" groups="hr_attendance.group_hr_attendance_kiosk" action="hr_attendance_action_kiosk_mode"/> -->
 
     <menuitem id="menu_hr_attendance_view_attendances" name="Attendances" parent="menu_hr_attendance_root" sequence="10" groups="hr_attendance.group_hr_attendance_user" action="hr_attendance_action"/>
 </odoo>
