@@ -13,6 +13,7 @@ class HRAttendanceReport(models.Model):
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     check_in = fields.Date("Check In", readonly=True)
     worked_hours = fields.Float("Hours Worked", readonly=True)
+    # disabled this in views
     overtime_hours = fields.Float("Extra Hours", readonly=True)
 
     def init(self):

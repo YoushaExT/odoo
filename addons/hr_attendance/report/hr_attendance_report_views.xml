@@ -24,7 +24,7 @@
                 <field name="employee_id" type="row"/>
                 <field name="check_in" type="col"/>
                 <field name="worked_hours" type="measure"/>
-                <field name="overtime_hours" type="measure"/>
+                <!-- <field name="overtime_hours" type="measure"/> -->
             </pivot>
         </field>
     </record>
@@ -36,7 +36,7 @@
             <graph string="Attendance Statistics" stacked="0" disable_linking="1">
                 <field name="employee_id"/>
                 <field name="check_in"/>
-                <field name="overtime_hours" type="measure" />
+                <!-- <field name="overtime_hours" type="measure" /> -->
                 <field name="worked_hours" type="measure" />
             </graph>
         </field>
