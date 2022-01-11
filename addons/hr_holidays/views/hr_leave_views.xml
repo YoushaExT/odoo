@@ -655,9 +655,15 @@
         <field name="res_model">hr.leave</field>
         <field name="view_mode">tree,kanban,form,calendar,activity</field>
         <field name="search_view_id" ref="hr_holidays.hr_leave_view_search_manager"/>
-        <field name="context">{
+        <!-- <field name="context">{
             'search_default_approve': 1,
             'search_default_my_team': 2,
+            'search_default_active_employee': 3,
+            'search_default_active_time_off': 4,
+            'hide_employee_name': 1}
+        </field> -->
+        <!-- DISABLE DEFAULT FILTER FOR TIMEOFF -->
+        <field name="context">{
             'search_default_active_employee': 3,
             'search_default_active_time_off': 4,
             'hide_employee_name': 1}
