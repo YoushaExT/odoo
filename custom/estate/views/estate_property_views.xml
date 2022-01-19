@@ -49,7 +49,7 @@
             <form string="Estate Property">
                 <sheet>
                     <group>
-                        <h1 class="">
+                        <h1 class="yousha-class">
                             <field name="name"/>
                         </h1>
                     </group>
