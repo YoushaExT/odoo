@@ -20,3 +20,5 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
     state = fields.Selection(selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], required=True, copy=False, default='new')
     active = fields.Boolean(default=True)
+    # linked fields
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
