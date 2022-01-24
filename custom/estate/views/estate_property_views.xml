@@ -102,19 +102,6 @@
                                 </group>
                             </page>
                             <page string="Offers">
-
-
-<!--                                <record id="estate_model_view_tree" model="ir.ui.view">-->
-<!--                                    <field name="name">estate.property.offers.tree</field>-->
-<!--                                    <field name="model">estate.property.offers</field>-->
-<!--                                    <field name="arch" type="xml">-->
-<!--                                        <tree string="Channel">-->
-<!--                                            <field name="price"/>-->
-<!--                                            <field name="partner_id"/>-->
-<!--                                            <field name="status"/>-->
-<!--                                        </tree>-->
-<!--                                    </field>-->
-<!--                                </record>-->
                                 <field name="offer_ids">
                                     <tree string="Channel">
                                         <field name="price"/>
@@ -122,19 +109,6 @@
                                         <field name="status"/>
                                     </tree>
                                 </field>
-<!--                                <tree string="Channel">-->
-<!--                                    <field name="offer_ids.price"/>-->
-<!--                                    <field name="offer_ids.partner_id"/>-->
-<!--                                    <field name="offer_ids.status"/>-->
-<!--                                </tree>-->
-
-<!--                                <field name="name">Property Offers</field>-->
-<!--                                <field name="res_model">estate.property.offer</field>-->
-<!--                                <field name="view_mode">tree,form</field>-->
-
-<!--                                <group>-->
-<!--                                    <field name="seller_id"/>-->
-<!--                                </group>-->
                             </page>
                             <page string="Other Info">
                                 <group>
