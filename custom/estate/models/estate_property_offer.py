@@ -22,23 +22,17 @@ class EstatePropertyOffer(models.Model):
             property_offer.validity = (property_offer.date_deadline - date).days
 
     def action_accept(self):
-        #TODO
-        print('accept')
         if self.property_id.state not in ('sold', 'canceled'):
             self.status = 'accepted'
             self.property_id.state = 'offer_accepted'
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
         else:
-            #TODO
             print('ALREADY SOLD')
 
 
     def action_refuse(self):
-        #TODO
-        print('reject')
         if self.property_id.state not in ('sold', 'canceled'):
             self.status = 'refused'
         else:
-            #TODO
             print('ALREADY SOLD')
