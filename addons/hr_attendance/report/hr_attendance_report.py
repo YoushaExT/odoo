@@ -12,9 +12,9 @@ class HRAttendanceReport(models.Model):
     department_id = fields.Many2one('hr.department', string="Department", readonly=True)
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     check_in = fields.Date("Check In", readonly=True)
-    worked_hours = fields.Float("Hours Worked", readonly=True)
+    worked_hours = fields.Float("Hours Worked", readonly=True, group_operator="avg")
     # disabled this in views
-    overtime_hours = fields.Float("Extra Hours", readonly=True)
+    # overtime_hours = fields.Float("Extra Hours", readonly=True)
 
     def init(self):
         self.env.cr.execute("""
