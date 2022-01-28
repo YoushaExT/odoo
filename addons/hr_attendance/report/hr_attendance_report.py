@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
+from datetime import datetime
+import pytz
 
 
 class HRAttendanceReport(models.Model):
@@ -13,10 +15,13 @@ class HRAttendanceReport(models.Model):
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     check_in = fields.Date("Check In", readonly=True)
     worked_hours = fields.Float("Hours Worked", readonly=True, group_operator="avg")
+    check_in_time = fields.Float("Check In Time", readonly=True, group_operator="avg")
     # disabled this in views
     # overtime_hours = fields.Float("Extra Hours", readonly=True)
 
     def init(self):
+        tz = self.env.user.employee_id.tz or 'Asia/Karachi'
+        hours = pytz.timezone(tz).localize(datetime.now()).utcoffset().seconds / 3600
         self.env.cr.execute("""
             CREATE OR REPLACE VIEW %s AS (
                 (
@@ -26,14 +31,16 @@ class HRAttendanceReport(models.Model):
                         hra.employee_id,
                         hra.check_in,
                         hra.worked_hours,
-                        coalesce(ot.duration, 0) as overtime_hours
+                        coalesce(ot.duration, 0) as overtime_hours,
+						hra.check_in_time + %i as check_in_time
                     FROM (
                         SELECT
                             id,
                             row_number() over (partition by employee_id, CAST(check_in AS DATE)) as ot_check,
                             employee_id,
                             CAST(check_in as DATE) as check_in,
-                            worked_hours
+                            worked_hours,
+							extract (epoch from check_in::time)/3600 as check_in_time
                         FROM
                             hr_attendance
                         ) as hra
@@ -45,7 +52,7 @@ class HRAttendanceReport(models.Model):
                             ON hra.ot_check = 1
                             AND ot.employee_id = hra.employee_id
                             AND ot.date = hra.check_in
-                            AND ot.adjustment = FALSE
+                            AND ot.adjustment = FALSE                
                 )
             )
-        """ % (self._table))
+        """ % (self._table, hours))
