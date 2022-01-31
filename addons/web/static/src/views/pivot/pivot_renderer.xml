@@ -36,6 +36,7 @@
                                     <div t-elif="model.metaData.measures[cell.measure].type === 'boolean'" class="o_value">
                                         <CheckBox disabled="true" value="cell.value" />
                                     </div>
+                                    <div t-elif="9 > cell.value and model.metaData.resModel === 'hr.attendance.report' and model.metaData.measures[cell.measure].name === 'worked_hours'" class="o_value attendance_flag" t-esc="getFormattedValue(cell)"/>
                                     <div t-else="1" class="o_value" t-esc="getFormattedValue(cell)"/>
                                 </t>
                             </td>
