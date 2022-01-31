@@ -318,6 +318,7 @@ import { computeReportMeasures, processMeasure } from "@web/views/helpers/utils"
  * @property {Data} data
  */
 
+let IS_ATTENDANCE_PIVOT = false
 export class PivotModel extends Model {
     /**
      * @override
@@ -377,6 +378,9 @@ export class PivotModel extends Model {
             sortedColumn,
         });
         this.metaData = this._buildMetaData(metaData);
+
+        // TODO=
+        IS_ATTENDANCE_PIVOT = this.metaData.resModel === 'hr.attendance.report'
 
         this.reload = false; // used to discriminate between the first load and subsequent reloads
         this.nextActiveMeasures = null; // allows to toggle several measures consecutively
@@ -1222,7 +1226,9 @@ export class PivotModel extends Model {
                     rowIndex === 0
                         ? undefined
                         : fields[colGroupBys[rowIndex - 1].split(":")[0]].string,
-                title: group.labels[group.labels.length - 1] || _t("Total"),
+                // TODO=
+                title: IS_ATTENDANCE_PIVOT ? group.labels[group.labels.length - 1] || _t("Average") : group.labels[group.labels.length - 1] || _t("Total"),
+                // title: group.labels[group.labels.length - 1] || _t("Total"),
                 width: leafCount * measureCount * (2 * originCount - 1),
             };
             row.push(cell);
@@ -1273,7 +1279,9 @@ export class PivotModel extends Model {
         let rows = [];
         const group = tree.root;
         const rowGroupId = [group.values, []];
-        const title = group.labels[group.labels.length - 1] || this.env._t("Total");
+        // TODO=
+        const title = IS_ATTENDANCE_PIVOT ? group.labels[group.labels.length - 1] || this.env._t("Average") : group.labels[group.labels.length - 1] || this.env._t("Total");
+        // const title = group.labels[group.labels.length - 1] || this.env._t("Total");
         const indent = group.labels.length;
         const isLeaf = !tree.directSubTrees.size;
         const rowGroupBys = this.metaData.fullRowGroupBys;
