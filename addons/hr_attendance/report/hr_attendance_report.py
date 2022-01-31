@@ -34,8 +34,12 @@ class HRAttendanceReport(models.Model):
                         hra.check_in,
                         hra.worked_hours,
                         coalesce(ot.duration, 0) as overtime_hours,
+<<<<<<< Updated upstream
 						hra.check_in_time + %i as check_in_time,
 						hra.check_out_time + %i as check_out_time
+=======
+						hra.check_in_time
+>>>>>>> Stashed changes
                     FROM (
                         SELECT
                             id,
@@ -43,8 +47,12 @@ class HRAttendanceReport(models.Model):
                             employee_id,
                             CAST(check_in as DATE) as check_in,
                             worked_hours,
+<<<<<<< Updated upstream
 							extract (epoch from check_in::time)/3600 as check_in_time,
 							extract (epoch from check_out::time)/3600 as check_out_time
+=======
+							extract (epoch from check_in::time)/3600 as check_in_time
+>>>>>>> Stashed changes
                         FROM
                             hr_attendance
                         ) as hra
@@ -57,6 +65,10 @@ class HRAttendanceReport(models.Model):
                             AND ot.employee_id = hra.employee_id
                             AND ot.date = hra.check_in
                             AND ot.adjustment = FALSE                
+<<<<<<< Updated upstream
                 )
+=======
+                            )
+>>>>>>> Stashed changes
             )
         """ % (self._table, hours, hours))
