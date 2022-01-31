@@ -27,6 +27,8 @@ class HrAttendance(models.Model):
     check_out = fields.Datetime(string="Check Out")
     worked_hours = fields.Float(string='Worked Hours', compute='_compute_worked_hours', store=True, readonly=True)
     daily_hours = fields.Float(string='Daily Hours', compute='_compute_daily_hours', store=True, readonly=True)
+    adjusted_check_in = fields.Datetime(string="Adjusted Check In", default=fields.Datetime.now, compute='_compute_adjusted_check_in', store=True, readonly=True)
+    adjusted_check_out = fields.Datetime(string="Adjusted Check Out", compute='_compute_adjusted_check_out', store=True, readonly=True)
 
     def name_get(self):
         result = []
@@ -46,14 +48,40 @@ class HrAttendance(models.Model):
 
     @api.depends('worked_hours')
     def _compute_daily_hours(self):
-        employee = self.employee_id
-        hours = 0.0
-        for attendance in employee.attendance_ids:
-            if self.check_in.date() == attendance.check_in.date():
-                hours += attendance.worked_hours
-        for attendance in employee.attendance_ids:
-            if self.check_in.date() == attendance.check_in.date():
-                attendance.daily_hours = hours
+        for att in self:
+            employee = att.employee_id
+            hours = 0.0
+            for attendance in employee.attendance_ids:
+                if att.check_in.date() == attendance.check_in.date():
+                    hours += attendance.worked_hours
+            for attendance in employee.attendance_ids:
+                if att.check_in.date() == attendance.check_in.date():
+                    attendance.daily_hours = hours
+
+    @api.depends('worked_hours')
+    def _compute_adjusted_check_in(self):
+        for att in self:
+            employee = att.employee_id
+            this_date_attendances = []
+            for attendance in employee.attendance_ids:
+                if att.check_in.date() == attendance.check_in.date():
+                    this_date_attendances.append(attendance)
+
+            check_in = min([atd.check_in for atd in this_date_attendances])
+            for attendance in this_date_attendances:
+                attendance.adjusted_check_in = check_in
+
+    @api.depends('worked_hours')
+    def _compute_adjusted_check_out(self):
+        for att in self:
+            employee = att.employee_id
+            this_date_attendances = []
+            for attendance in employee.attendance_ids:
+                if att.check_in.date() == attendance.check_in.date():
+                    this_date_attendances.append(attendance)
+
+            for attendance in this_date_attendances:
+                attendance.adjusted_check_out = att.adjusted_check_in + timedelta(hours=att.daily_hours)
 
     @api.depends('check_in', 'check_out')
     def _compute_worked_hours(self):
