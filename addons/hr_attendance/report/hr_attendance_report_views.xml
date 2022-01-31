@@ -23,7 +23,8 @@
             <pivot string="Attendance" disable_linking="1">
                 <field name="employee_id" type="row"/>
                 <field name="check_in" type="col"/>
-                <field name="worked_hours" type="measure"/>
+<!--                <field name="worked_hours" type="measure"/>-->
+                <field name="daily_hours" type="measure"/>
                 <field name="check_in_time" type="measure" widget="float_time"/>
                 <field name="check_out_time" type="measure" widget="float_time"/>
                 <!-- <field name="overtime_hours" type="measure"/> -->

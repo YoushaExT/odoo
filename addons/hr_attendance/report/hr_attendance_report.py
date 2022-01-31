@@ -15,6 +15,7 @@ class HRAttendanceReport(models.Model):
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     check_in = fields.Date("Check In", readonly=True)
     worked_hours = fields.Float("Hours Worked", readonly=True)
+    daily_hours = fields.Float("Hours Worked", readonly=True, group_operator="avg")
     check_in_time = fields.Float("Check In Time", readonly=True, group_operator="avg")
     check_out_time = fields.Float("Check Out Time", readonly=True, group_operator="avg")
 
@@ -35,7 +36,8 @@ class HRAttendanceReport(models.Model):
                         hra.worked_hours,
                         coalesce(ot.duration, 0) as overtime_hours,
 						hra.check_in_time + %i as check_in_time,
-						hra.check_out_time + %i as check_out_time
+						hra.check_out_time + %i as check_out_time,
+						hra.daily_hours
                     FROM (
                         SELECT
                             id,
@@ -43,6 +45,7 @@ class HRAttendanceReport(models.Model):
                             employee_id,
                             CAST(check_in as DATE) as check_in,
                             worked_hours,
+                            daily_hours,
 							extract (epoch from check_in::time)/3600 as check_in_time,
 							extract (epoch from check_out::time)/3600 as check_out_time
                         FROM
