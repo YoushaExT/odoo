@@ -14,7 +14,7 @@ class HRAttendanceReport(models.Model):
     department_id = fields.Many2one('hr.department', string="Department", readonly=True)
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     check_in = fields.Date("Check In", readonly=True)
-    worked_hours = fields.Float("Hours Worked", readonly=True, group_operator="avg")
+    worked_hours = fields.Float("Hours Worked", readonly=True)
     check_in_time = fields.Float("Check In Time", readonly=True, group_operator="avg")
     check_out_time = fields.Float("Check Out Time", readonly=True, group_operator="avg")
 

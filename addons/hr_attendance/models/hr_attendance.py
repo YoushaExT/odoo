@@ -26,6 +26,7 @@ class HrAttendance(models.Model):
     check_in = fields.Datetime(string="Check In", default=fields.Datetime.now, required=True)
     check_out = fields.Datetime(string="Check Out")
     worked_hours = fields.Float(string='Worked Hours', compute='_compute_worked_hours', store=True, readonly=True)
+    daily_hours = fields.Float(string='Daily Hours', compute='_compute_daily_hours', store=True, readonly=True)
 
     def name_get(self):
         result = []
@@ -42,6 +43,19 @@ class HrAttendance(models.Model):
                     'check_out': format_datetime(self.env, attendance.check_out, dt_format=False),
                 }))
         return result
+
+    @api.depends('worked_hours')
+    def _compute_daily_hours(self):
+        employee = self.employee_id
+        hours = 0.0
+        for attendance in employee.attendance_ids:
+            if self.check_in.date() == attendance.check_in.date():
+                hours += attendance.worked_hours
+        print('HOURS ARE')
+        print(hours)
+        for attendance in employee.attendance_ids:
+            if self.check_in.date() == attendance.check_in.date():
+                attendance.daily_hours = hours
 
     @api.depends('check_in', 'check_out')
     def _compute_worked_hours(self):
