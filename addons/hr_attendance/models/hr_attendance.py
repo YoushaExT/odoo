@@ -51,8 +51,6 @@ class HrAttendance(models.Model):
         for attendance in employee.attendance_ids:
             if self.check_in.date() == attendance.check_in.date():
                 hours += attendance.worked_hours
-        print('HOURS ARE')
-        print(hours)
         for attendance in employee.attendance_ids:
             if self.check_in.date() == attendance.check_in.date():
                 attendance.daily_hours = hours
