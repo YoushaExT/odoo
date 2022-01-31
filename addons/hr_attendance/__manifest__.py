@@ -41,6 +41,7 @@ actions(Check in/Check out) performed by them.
             'hr_attendance/static/src/js/kiosk_confirm.js',
             'hr_attendance/static/src/js/my_attendances.js',
             'hr_attendance/static/src/js/time_widget.js',
+            'hr_attendance/static/src/js/attendance_pivot_view.js',
             'hr_attendance/static/src/scss/hr_attendance.scss',
         ],
         'web.qunit_suite_tests': [
