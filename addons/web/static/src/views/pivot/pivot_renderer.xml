@@ -44,6 +44,9 @@
                     </tr>
                 </tbody>
             </table>
+            <div t-if="model.metaData.resModel === 'hr.attendance.report'">
+                * Adjusted check in times when there are multiple check ins per day. Adjusted check in is the first check in, adjusted_check_out is first check in + hours worked
+            </div>
         </div>
     </t>
 
