@@ -14,10 +14,12 @@ class HRAttendanceReport(models.Model):
     department_id = fields.Many2one('hr.department', string="Department", readonly=True)
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     check_in = fields.Date("Check In", readonly=True)
-    worked_hours = fields.Float("Hours Worked", readonly=True)
+    worked_hours = fields.Float("Hours Worked Total", readonly=True)
     daily_hours = fields.Float("Hours Worked", readonly=True, group_operator="avg")
     check_in_time = fields.Float("Check In Time", readonly=True, group_operator="avg")
     check_out_time = fields.Float("Check Out Time", readonly=True, group_operator="avg")
+    adjusted_check_in_time = fields.Float("Check In Time*", readonly=True, group_operator="avg")
+    adjusted_check_out_time = fields.Float("Check Out Time*", readonly=True, group_operator="avg")
 
     # disabled this in views
     # overtime_hours = fields.Float("Extra Hours", readonly=True)
@@ -37,7 +39,9 @@ class HRAttendanceReport(models.Model):
                         coalesce(ot.duration, 0) as overtime_hours,
 						hra.check_in_time + %i as check_in_time,
 						hra.check_out_time + %i as check_out_time,
-						hra.daily_hours
+						hra.daily_hours,
+						hra.adjusted_check_in_time + 5 as adjusted_check_in_time,
+						hra.adjusted_check_out_time + 5 as adjusted_check_out_time
                     FROM (
                         SELECT
                             id,
@@ -47,7 +51,9 @@ class HRAttendanceReport(models.Model):
                             worked_hours,
                             daily_hours,
 							extract (epoch from check_in::time)/3600 as check_in_time,
-							extract (epoch from check_out::time)/3600 as check_out_time
+							extract (epoch from check_out::time)/3600 as check_out_time,
+							extract (epoch from adjusted_check_in::time)/3600 as adjusted_check_in_time,
+							extract (epoch from adjusted_check_out::time)/3600 as adjusted_check_out_time
                         FROM
                             hr_attendance
                         ) as hra
